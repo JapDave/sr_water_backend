@@ -88,16 +88,17 @@ exports.cardHolderContact=async(req,res)=>{
       let mail = MailGenerator.generate(response);
       // siddhivinayakgranules@gmail.com 
         let message = {
-          from: EMAIL,
-          to: "srwater031987@gmail.com",
-          subject: "Contact form",
-          html: mail,
+        from: EMAIL,
+        to: "srwater031987@gmail.com",
+        subject: "Contact form",
+        html: mail,
         };
     
         try {
         await transporter.sendMail(message)
+        let {phone,name,email,message}=req.body
         let length=await ContactModel.countDocuments()
-            let data= ContactModel({...req.body,inquiry_number: length+1,sales_person:name})
+            let data= ContactModel({name,email,phone,message,inquiry_number: length+1,sales_person:name})
             await data.save()
                 res.send({
                     msg:"Message Sent Successfully",
