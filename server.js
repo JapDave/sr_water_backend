@@ -6,6 +6,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const app = express();
 const fs = require("fs");
+const path=require("path")
 const { categoryRouter } = require("./routes/category.routes");
 const { productRouter } = require("./routes/product.routes");
 const { cardRouter } = require("./routes/card.routes");
@@ -15,6 +16,7 @@ const { aboutRouter } = require("./routes/about.routes");
 const { newsRouter } = require("./routes/news.routes");
 const { broucherRouter } = require("./routes/broucher.routes");
 const { inquiryRouter } = require("./routes/inquiry.routes");
+const { annualRouter } = require("./routes/annualScheme.routes");
 app.use(express.json());
 require("dotenv").config();
 app.use(cors({ origin: true }));
@@ -118,6 +120,7 @@ app.use("/", aboutRouter);
 app.use("/", newsRouter);
 app.use("/",broucherRouter)
 app.use("/",inquiryRouter)
+app.use("/",annualRouter)
 
 app.post("/broucher/pdf",upload5.single("broucher"),async(req,res)=>{
   console.log(req.file);
