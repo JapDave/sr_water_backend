@@ -1,5 +1,5 @@
 
-   let  EMAIL='dhruv@teamflourish.co'
-   let  PASSWORD='ktib mbtf dcwh cdqw'
+   let  EMAIL='developer@teamflourish.co'
+   let  PASSWORD='ohhl vhhl cjca sgyy'
 
    module.exports ={EMAIL,PASSWORD}

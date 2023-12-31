@@ -8,7 +8,7 @@ cardRouter.get("/card/search/:name",cardController.searchCard)
 cardRouter.post("/card/edit/:name",cardController.editDetailCard)
 cardRouter.get("/card/:name",cardController.getDetailCard)
 cardRouter.delete("/card/delete/:id",cardController.deleteCard)
-cardRouter.post("/card/contact/:name",cardController.cardHolderContact)
+cardRouter.post("/card/contact/:names",cardController.cardHolderContact)
 
 
 module.exports={cardRouter}

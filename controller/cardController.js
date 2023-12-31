@@ -50,7 +50,7 @@ exports.deleteCard=async(req,res)=>{
 }
 
 exports.cardHolderContact=async(req,res)=>{
-    const {name}=req.params
+    const {names}=req.params
     let config = {
         host: "smtp.gmail.com",
         port: 587,
@@ -72,7 +72,7 @@ exports.cardHolderContact=async(req,res)=>{
       let response = {
         body: {
           name: "SR Enterprise",
-          intro: `Your Message Arrived through  ${name}`,
+          intro: `Your Message Arrived through  ${names}`,
           table: {
             data: [
               {
@@ -87,17 +87,18 @@ exports.cardHolderContact=async(req,res)=>{
       };
       let mail = MailGenerator.generate(response);
       // siddhivinayakgranules@gmail.com 
-        let message = {
-          from: EMAIL,
-          to: "srwater031987@gmail.com",
-          subject: "Contact form",
-          html: mail,
+        let messages = {
+        from: EMAIL,
+        to: "srwater031987@gmail.com",
+        subject: "Contact form",
+        html: mail,
         };
     
         try {
-        await transporter.sendMail(message)
+        await transporter.sendMail(messages)
+        let {phone,name,email,message}=req.body
         let length=await ContactModel.countDocuments()
-            let data= ContactModel({...req.body,inquiry_number: length+1,sales_person:name})
+            let data= ContactModel({name,email,phone,message,inquiry_number: length+1,sales_person:names})
             await data.save()
                 res.send({
                     msg:"Message Sent Successfully",
@@ -150,17 +151,39 @@ exports.searchCard=async(req,res)=>{
 exports.getDetailCard=async(req,res)=>{
     const {name}=req.params
     try {
-        let data=await CardModel.find({name})
+        let data=await CardModel.aggregate([
+            {
+                $match:{
+                    name:name
+                }
+            },{
+                $lookup:{
+                    from:"views",
+                    localField:"_id",
+                    foreignField:"name",
+                    as:"users"
+                }
+            }
+        ])
         res.send({
             msg:"Card Added Successfully",
             data,
-            status:res.statusCode
+            status:res.statusCode,
+            
         })
     } catch (error) {
         res.send({
             msg:error.message,
             status:res.statusCode
         })
+    }
+}
+
+exports.viewCount=async(req,res)=>{
+    try {
+        
+    } catch (error) {
+        
     }
 }
 
