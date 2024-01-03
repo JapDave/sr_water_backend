@@ -1,3 +1,5 @@
+const CardModel = require("../model/cardModel")
+const { HomeModel } = require("../model/homeModel")
 const ProductModel = require("../model/productModel")
 
 exports.addProduct=async(req,res)=>{
@@ -76,11 +78,15 @@ exports.editProductDetail=async(req,res)=>{
 exports.deleteProduct=async(req,res)=>{
     let {id}=req.params
     try {
-        let data=await ProductModel.findByIdAndDelete(id)
+         let data=await ProductModel.findByIdAndDelete(id)
+        // let data=await ProductModel.updateMany({_id:id},{$pull:{_id:id}})
+        let cardData=await CardModel.updateMany({},{$pull:{products:id}})
+         let homeData=await HomeModel.updateMany({},{$pull:{products:id}})
         res.send({
             msg:"Product Deleted Successfully",
             data,
-            status:res.statusCode  
+            cardData,
+            status:res.statusCode
         })
     } catch (error) {
         res.send({
